@@ -8,25 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-
-    let vehicleEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
-    let animalEmojis:[String] = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐻‍❄️","🐨","🐯","🦁","🐮","🐷","🐸","🐧"]
-    let foodEmojis:[String] = ["🍏","🍎","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🍆","🥑"]
-   @State var emojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
+    @State var defaultEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
+    var vehicleEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
+    var animalEmojis:[String] = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐻‍❄️","🐨","🐯","🦁","🐮","🐷","🐸","🐧"]
+    var foodEmojis:[String] = ["🍏","🍎","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🍆","🥑"]
+   
     
-    let emojiCount = 16
     var title = " Memorize!"
     var body: some View {
         VStack{
             Text(title).font(.largeTitle)
             ScrollView{
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]){
-                    ForEach(emojis[0..<emojiCount], id: \.self ){ emoji in
+                    ForEach(defaultEmojis, id: \.self ){ emoji in
                         CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
                     }
-                    
                 }
-                
             }
             .foregroundColor(.red)
             Spacer()
@@ -47,21 +44,24 @@ struct ContentView: View {
     
     var vehicles : some View {
         VStack{
-            Button(action: {emojis = vehicleEmojis.shuffled()}){ Image(systemName: "car")}.font(.largeTitle)
+            Button(action: {defaultEmojis = vehicleEmojis.shuffled()}){ Image(systemName: "car")}
+                .font(.largeTitle)
             Text("Vehicles")
         }
     }
 
     var animal : some View {
         VStack{
-            Button(action: {emojis = animalEmojis.shuffled()}){Image(systemName: "pawprint")}.font(.largeTitle)
+            Button(action: {defaultEmojis = animalEmojis.shuffled()}){Image(systemName: "pawprint")}
+                .font(.largeTitle)
             Text("Animal")
         }
     }
     var food : some View {
         VStack{
-            Button(action: {emojis = foodEmojis.shuffled()}){Image(systemName: "fork.knife")}.font(.largeTitle)
-            Text("food")
+            Button(action: {defaultEmojis = foodEmojis.shuffled()}){Image(systemName: "fork.knife")}
+                .font(.largeTitle)
+            Text("Food")
         }
     }
 }
@@ -78,6 +78,7 @@ struct CardView : View {
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: 3)
                     Text(content)
+                        .font(.title)
                 }
                 else {
                     shape.fill()
