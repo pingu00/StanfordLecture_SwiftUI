@@ -8,18 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var defaultEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
-    var vehicleEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
-    var animalEmojis:[String] = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐻‍❄️","🐨","🐯","🦁","🐮","🐷","🐸","🐧"]
-    var foodEmojis:[String] = ["🍏","🍎","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🍆","🥑"]
-@State var cardNum = 16
-    var title = " Memorize!"
+    var emojis:[String] = ["🛶","🛳","🚁","🚀","🚂","🚆","🚊","⛵️","🛥","⛴","🛸","🚢","🚋","🚅","🚇","🛫","🛰","🚗","🚕","🚙","🚌","🚎","🏎","🚛"]
+    @State var emojiCount = 4
     var body: some View {
         VStack{
-            Text(title).font(.largeTitle)
             ScrollView{
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: cardNum)))]){
-                    ForEach(defaultEmojis, id: \.self ){ emoji in
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]){
+                    ForEach(emojis[0..<emojiCount], id: \.self ){ emoji in
                         CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
                     }
                 }
@@ -27,74 +22,38 @@ struct ContentView: View {
             .foregroundColor(.red)
             Spacer()
             HStack{
+                remove
                 Spacer()
-                vehicles
-                Spacer()
-                animal
-                Spacer()
-                food
-                Spacer()
+                add
             }
+            .font(.largeTitle)
             .padding(.horizontal)
         }
         .padding(.horizontal)
         
     }
     
-    var vehicles : some View {
-        VStack{
-            Button(action: {
-                cardNum = Int.random(in: 4...16)
-                let shuffledEmojis = vehicleEmojis.shuffled()
-                defaultEmojis = Array(shuffledEmojis[0..<cardNum])})
-            { Image(systemName: "car")}
-                .font(.largeTitle)
-            Text("Vehicles")
+    var remove : some View {
+        Button(action: {
+            if emojiCount > 1{
+                emojiCount -= 1
+            }
+        }){
+            Image(systemName: "minus.circle")
         }
     }
 
-    var animal : some View {
-        VStack{
-            Button(action: {
-                cardNum = Int.random(in: 1...16)
-                let shuffledEmojis = animalEmojis.shuffled()
-                defaultEmojis = Array(shuffledEmojis[0..<cardNum])})
-                {Image(systemName: "pawprint")}
-                .font(.largeTitle)
-            Text("Animal")
-        }
-    }
-    var food : some View {
-        VStack{
-            Button(action: {
-                cardNum = Int.random(in: 4...16)
-                let shuffledEmojis = foodEmojis.shuffled()
-                defaultEmojis = Array(shuffledEmojis[0..<cardNum])}){Image(systemName: "fork.knife")}
-                .font(.largeTitle)
-            Text("Food")
+    var add : some View {
+        Button(action: {
+            if emojiCount < emojis.count {
+                emojiCount += 1
+            }
+        }){
+            Image(systemName: "plus.circle")
         }
     }
 }
 
-func widthThatBestFits(cardCount: Int) -> CGFloat {
-    let id = Int(ceil(CGFloat(cardCount).squareRoot())) - 1 // 카드개수의 루트값의 올림.
-    if id == 0 {
-        return 180
-    }
-    else if id == 1 {
-        return 120
-    }
-    else if id == 2 {
-        return 90
-    }
-    else if id == 3 {
-        return 70
-    }
-    else {
-        return 60
-    }
-}
-                         
 struct CardView : View {
     var content: String
     @State var isFaceUp: Bool = true
@@ -106,7 +65,6 @@ struct CardView : View {
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: 3)
                     Text(content)
-                        .font(.title)
                 }
                 else {
                     shape.fill()
