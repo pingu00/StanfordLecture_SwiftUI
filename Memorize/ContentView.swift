@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var defaultEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
-    var vehicleEmojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
-    var animalEmojis:[String] = ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐻‍❄️","🐨","🐯","🦁","🐮","🐷","🐸","🐧"]
-    var foodEmojis:[String] = ["🍏","🍎","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🍆","🥑"]
-@State var cardNum = 16
+    
+    let viewModel:EmojiMemoryGame
+    
+
     var title = " Memorize!"
     var body: some View {
         VStack{
             Text(title).font(.largeTitle)
             ScrollView{
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: cardNum)))]){
-                    ForEach(defaultEmojis, id: \.self ){ emoji in
-                        CardView(content: emoji).aspectRatio(2/3, contentMode: .fit)
+                    ForEach(viewModel.cards){ card in
+                        CardView(card:card)
+                            .aspectRatio(2/3, contentMode: .fit)
                     }
                 }
             }
@@ -96,24 +96,20 @@ func widthThatBestFits(cardCount: Int) -> CGFloat {
 }
                          
 struct CardView : View {
-    var content: String
-    @State var isFaceUp: Bool = true
+    let card:MemoryGame<String>.Card
     
     var body: some View {
         ZStack{
             let shape = RoundedRectangle(cornerRadius: 20)
-                if isFaceUp {
+            if card.isFaceUp {
                     shape.fill().foregroundColor(.white)
                     shape.strokeBorder(lineWidth: 3)
-                    Text(content)
+                Text(card.content)
                         .font(.title)
                 }
                 else {
                     shape.fill()
                 }
-        }
-        .onTapGesture {
-            isFaceUp = !isFaceUp
         }
     }
 }
@@ -127,7 +123,8 @@ struct CardView : View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let game = EmojiMemoryGame()
+        ContentView(viewModel: game)
             .previewDevice("iPhone 12 Pro")
             .preferredColorScheme(.dark)
 
