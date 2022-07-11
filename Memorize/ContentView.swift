@@ -17,83 +17,17 @@ struct ContentView: View {
         VStack{
             Text(title).font(.largeTitle)
             ScrollView{
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: cardNum)))]){
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]){
                     ForEach(viewModel.cards){ card in
                         CardView(card:card)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
                 }
-            }
-            .foregroundColor(.red)
-            Spacer()
-            HStack{
-                Spacer()
-                vehicles
-                Spacer()
-                animal
-                Spacer()
-                food
-                Spacer()
-            }
-            .padding(.horizontal)
-        }
-        .padding(.horizontal)
-        
-    }
-    
-    var vehicles : some View {
-        VStack{
-            Button(action: {
-                cardNum = Int.random(in: 4...16)
-                let shuffledEmojis = vehicleEmojis.shuffled()
-                defaultEmojis = Array(shuffledEmojis[0..<cardNum])})
-            { Image(systemName: "car")}
-                .font(.largeTitle)
-            Text("Vehicles")
-        }
-    }
-
-    var animal : some View {
-        VStack{
-            Button(action: {
-                cardNum = Int.random(in: 1...16)
-                let shuffledEmojis = animalEmojis.shuffled()
-                defaultEmojis = Array(shuffledEmojis[0..<cardNum])})
-                {Image(systemName: "pawprint")}
-                .font(.largeTitle)
-            Text("Animal")
-        }
-    }
-    var food : some View {
-        VStack{
-            Button(action: {
-                cardNum = Int.random(in: 4...16)
-                let shuffledEmojis = foodEmojis.shuffled()
-                defaultEmojis = Array(shuffledEmojis[0..<cardNum])}){Image(systemName: "fork.knife")}
-                .font(.largeTitle)
-            Text("Food")
-        }
+            }.foregroundColor(.red)
+        }.padding(.horizontal)
     }
 }
 
-func widthThatBestFits(cardCount: Int) -> CGFloat {
-    let id = Int(ceil(CGFloat(cardCount).squareRoot())) - 1 // 카드개수의 루트값의 올림.
-    if id == 0 {
-        return 180
-    }
-    else if id == 1 {
-        return 120
-    }
-    else if id == 2 {
-        return 90
-    }
-    else if id == 3 {
-        return 70
-    }
-    else {
-        return 60
-    }
-}
                          
 struct CardView : View {
     let card:MemoryGame<String>.Card
@@ -113,9 +47,6 @@ struct CardView : View {
         }
     }
 }
-
-
-
 
 
 
