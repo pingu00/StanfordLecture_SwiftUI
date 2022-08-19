@@ -9,20 +9,21 @@ import SwiftUI
 
 
 
-class EmojiMemoryGame { // no inheritance, because it's superclass
-    static let emojis:[String] = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
+class EmojiMemoryGame: ObservableObject { // no inheritance, because it's superclass
+    static let emojis = ["🚗","🚕","🚙","🚌","🚎","🏎","🚛","🚆","🚑","🚒","🚐","🛻","🚚","🚜","🚔","🚖"]
     
     static func createMemoryGame() -> MemoryGame<String> {
         MemoryGame<String>(numberOfPairsOfCards: 4){ pairIndex in
             EmojiMemoryGame.emojis[pairIndex]
         }
     }
-    private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
+
+    @Published private var model: MemoryGame<String> = createMemoryGame()
                  
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
     }
-    // Mark: - Intent(s)
+    // MARK: - Intent(s)
     func choose (_ card : MemoryGame<String>.Card) {
         model.choose(card)
     }

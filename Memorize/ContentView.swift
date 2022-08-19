@@ -9,13 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
-    let viewModel:EmojiMemoryGame
+    @ObservedObject var viewModel:EmojiMemoryGame
     
-
-    var title = " Memorize!"
     var body: some View {
         VStack{
-            Text(title).font(.largeTitle)
             ScrollView{
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]){
                     ForEach(viewModel.cards){ card in
@@ -43,10 +40,13 @@ struct CardView : View {
                     shape.strokeBorder(lineWidth: 3)
                 Text(card.content)
                         .font(.title)
-                }
-                else {
-                    shape.fill()
-                }
+            }
+            else if card.isMatched{
+                shape.opacity(0)
+            }
+            else {
+                shape.fill()
+            }
         }
     }
 }
