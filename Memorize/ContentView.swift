@@ -13,10 +13,15 @@ struct ContentView: View {
     
     var body: some View {
         VStack{
+            HStack {
+                Text(viewModel.themeName).font(.largeTitle).foregroundColor(viewModel.themeColor)
+                Spacer()
+                Text("Score: \(viewModel.score)").font(.largeTitle).foregroundColor(.white)
+            }
             ScrollView{
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]){
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]){
                     ForEach(viewModel.cards){ card in
-                        CardView(card:card)
+                        CardView(card:card,viewModel: viewModel)
                             .aspectRatio(2/3, contentMode: .fit)
                             .onTapGesture {
                                 viewModel.choose(card)
@@ -24,14 +29,20 @@ struct ContentView: View {
                     }
                 }
             }.foregroundColor(.red)
-        }.padding(.horizontal)
+            .padding(.horizontal)
+            Button{viewModel.newGame()} label: {Text("NewGame")
+                    .font(.largeTitle)
+                .foregroundColor(Color.red)}
+            
+                
+        }
     }
 }
 
                          
 struct CardView : View {
     let card:MemoryGame<String>.Card
-    
+    @ObservedObject var viewModel:EmojiMemoryGame
     var body: some View {
         ZStack{
             let shape = RoundedRectangle(cornerRadius: 20)
@@ -45,7 +56,7 @@ struct CardView : View {
                 shape.opacity(0)
             }
             else {
-                shape.fill()
+                shape.fill().foregroundColor(viewModel.themeColor)
             }
         }
     }
