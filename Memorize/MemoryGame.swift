@@ -36,6 +36,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         cards[index].isFaceUp = false
                         cards[index].hasBeenSeen = true
                     }
+
                 }
                 indexOfTheOneAndOnlyFaceUpCard = chosenIndex
             }

@@ -11,13 +11,14 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject { // no inheritance, because it's superclass
     
+   
     init() {
         theme = EmojiMemoryGame.themes.randomElement()!
         theme.contents.shuffle()
         model = EmojiMemoryGame.createMemoryGame(theme: theme)
     }
     
-    
+    private var theme:Theme
     
     static var themes:Array<Theme> = [
         Theme(name: "Expression",
@@ -55,7 +56,7 @@ class EmojiMemoryGame: ObservableObject { // no inheritance, because it's superc
 
     @Published private var model: MemoryGame<String>
     
-    private var theme:Theme
+    
     var themeName:String {
         return theme.name
     }
