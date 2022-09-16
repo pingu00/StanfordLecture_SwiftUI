@@ -11,7 +11,7 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject { // no inheritance, because it's superclass
     
-   
+    typealias Card = MemoryGame<String>.Card
     init() {
         theme = EmojiMemoryGame.themes.randomElement()!
         theme.contents.shuffle()
@@ -82,11 +82,11 @@ class EmojiMemoryGame: ObservableObject { // no inheritance, because it's superc
         }
         
     }
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         return model.cards
     }
     // MARK: - Intent(s)
-    func choose (_ card : MemoryGame<String>.Card) {
+    func choose (_ card : Card) {
         model.choose(card)
     }
     func newGame() {

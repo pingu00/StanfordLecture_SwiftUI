@@ -7,30 +7,30 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct EmojiMemoryGameView: View {
     
-    @ObservedObject var viewModel:EmojiMemoryGame
+    @ObservedObject var game:EmojiMemoryGame
     
     var body: some View {
         VStack{
             HStack {
-                Text(viewModel.themeName).font(.largeTitle).foregroundColor(viewModel.themeColor)
+                Text(game.themeName).font(.largeTitle).foregroundColor(game.themeColor)
                 Spacer()
-                Text("Score: \(viewModel.score)").font(.largeTitle).foregroundColor(.red)
+                Text("Score: \(game.score)").font(.largeTitle).foregroundColor(.red)
             }
             ScrollView{
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]){
-                    ForEach(viewModel.cards){ card in
-                        CardView(card:card,viewModel: viewModel)
+                    ForEach(game.cards){ card in
+                        CardView(card:card,viewModel: game)
                             .aspectRatio(2/3, contentMode: .fit)
                             .onTapGesture {
-                                viewModel.choose(card)
+                                game.choose(card)
                             }
                     }
                 }
             }.foregroundColor(.red)
             .padding(.horizontal)
-            Button{viewModel.newGame()} label: {Text("NewGame")
+            Button{game.newGame()} label: {Text("NewGame")
                     .font(.largeTitle)
                 .foregroundColor(Color.red)}
             
@@ -41,7 +41,7 @@ struct ContentView: View {
 
                          
 struct CardView : View {
-    let card:MemoryGame<String>.Card
+    private let card:EmojiMemoryGame.Card
     @ObservedObject var viewModel:EmojiMemoryGame
     var body: some View {
         ZStack{
@@ -69,7 +69,7 @@ struct CardView : View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let game = EmojiMemoryGame()
-        ContentView(viewModel: game)
+        EmojiMemoryGameView(game: game)
             .previewDevice("iPhone 12 Pro")
             .preferredColorScheme(.dark)
 
