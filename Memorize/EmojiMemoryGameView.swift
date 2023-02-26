@@ -41,7 +41,7 @@ struct EmojiMemoryGameView: View {
 
                          
 struct CardView : View {
-    private let card:EmojiMemoryGame.Card
+    let card:EmojiMemoryGame.Card
     @ObservedObject var viewModel:EmojiMemoryGame
     var body: some View {
         ZStack{
